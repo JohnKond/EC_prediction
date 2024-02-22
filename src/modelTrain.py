@@ -7,13 +7,21 @@ from xgboost import XGBRegressor
 # from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.svm import SVR
 
+from storeLoadUtils import load_params
+
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 from sklearn.preprocessing import StandardScaler
 
 
-def train_model(model_name, model_params, X_train, X_test, y_train, y_test):
+def train_model(model_name, X_train, X_test, y_train, y_test):
     # Create a Random Forest regression model with the best parameters from the finetuning
     # model_params = {'max_depth': None, 'min_samples_leaf': 1, 'min_samples_split': 2, 'n_estimators': 150}
+
+
+    model_params = load_params(model_name)
+    if not model_params:
+        print('Model parameters file does not exist. Exiting..')
+        return False
 
     if model_name == 'RF':
         model = RandomForestRegressor(**model_params, random_state=42)

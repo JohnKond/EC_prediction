@@ -11,17 +11,19 @@ Functions:
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from main import DATA_FOLDER
 
 def read_dataset():
     """
     Read two datasets from CSV files.
 
+
     Returns:
     - pd.DataFrame: The first dataset (df_01_09).
     - pd.DataFrame: The second dataset (df_02_09).
     """
-    df_01_09 = pd.read_csv(r"data/1_FINAL_DATASET_AFTER_KRIGING_INTERPOLATION.csv")
-    df_02_09 = pd.read_csv(r"data/DATA_02-09-23.csv")
+    df_01_09 = pd.read_csv(rf"{DATA_FOLDER}/1_FINAL_DATASET_AFTER_KRIGING_INTERPOLATION.csv")
+    df_02_09 = pd.read_csv(rf"{DATA_FOLDER}/DATA_02-09-23.csv")
     return df_01_09, df_02_09
 
 def data_preprocess(df):

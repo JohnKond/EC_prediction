@@ -1,6 +1,6 @@
-from modelParams import RF_param_grid, CAT_param_grid, XGB_param_grid, LogR_param_grid
+from globalParams import RF_param_grid, CAT_param_grid, XGB_param_grid, LogR_param_grid
 from sklearn.model_selection import GridSearchCV
-from storeLoadUtils import store_model, store_params
+from storeLoadUtils import store_model, store_params, load_model
 # Import models
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
@@ -9,7 +9,13 @@ from xgboost import XGBRegressor
 # from sklearn.svm import SVR
 
 
-def model_finetuning(model_name, X_train, X_test, y_train, y_test):
+def model_finetune(model_name, X_train, y_train):
+
+
+    if load_model(model_name):
+        print('Specified model already exists.')
+        return
+
 
     if model_name == 'RF':
         model = RandomForestRegressor(random_state=42)

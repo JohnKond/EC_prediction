@@ -15,6 +15,7 @@ Functions:
 import os
 import ast
 import joblib
+from main import DATA_FOLDER, PARAMS_FOLDER
 
 def store_params(model, params):
     """
@@ -27,7 +28,7 @@ def store_params(model, params):
     Returns:
     - None
     """
-    file_path = f'output/{model}/best_params.txt'
+    file_path = f'{PARAMS_FOLDER}/{model}_best_params.txt'
     
     # Write the text to the file
     with open(file_path, 'w') as file:
@@ -47,15 +48,19 @@ def load_params(model):
     - dict or False: The loaded parameters as a dictionary if successful, False otherwise.
     """
     # Specify the file path
-    file_path = f'output/{model}/best_params.txt'
+    file_path = f'{PARAMS_FOLDER}/{model}_best_params.txt'
 
     # Check if the file exists
-    if os.path.exists(file_path):
-        print(f"{model} parameters loaded.")
-    else:
-        print(f"{model} parameters do not exist.")
-        return False
+    # if os.path.exists(file_path):
+        # print(f"{model} parameters loaded.")
+    # else:
+        # print(f"{model} parameters do not exist.")
+        # return False
     
+    if not os.path.exists(file_path):
+        return False
+
+
     with open(file_path, 'r') as file:
         file_content = file.read()
 
@@ -103,11 +108,16 @@ def load_model(model_name):
     """
     file_path = f'/models/{model_name}_model.pkl'
 
-    try:
-        # Load the model from the specified file path
-        loaded_model = joblib.load(file_path)
-        print(f"Model loaded successfully from {file_path}")
-        return loaded_model
-    except Exception as e:
-        print(f"Error loading model: {e}")
-        return None
+
+    if not os.path.exists(file_path):
+        return False
+    else:
+
+        try:
+            # Load the model from the specified file path
+            loaded_model = joblib.load(file_path)
+            print(f"Model loaded successfully from {file_path}")
+            return loaded_model
+        except Exception as e:
+            print(f"Error loading model: {e}")
+            return None
