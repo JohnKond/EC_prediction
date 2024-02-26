@@ -1,8 +1,8 @@
 from globalParams import RF_param_grid, CAT_param_grid, XGB_param_grid, LogR_param_grid
 from sklearn.model_selection import GridSearchCV
-from storeLoadUtils import store_model, store_params, load_model
+from storeLoadUtils import store_params, load_model
+
 # Import models
-from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from xgboost import XGBRegressor
 # from sklearn.ensemble import GradientBoostingRegressor

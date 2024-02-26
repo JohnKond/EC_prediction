@@ -15,7 +15,11 @@ Functions:
 import os
 import ast
 import joblib
-from main import DATA_FOLDER, PARAMS_FOLDER
+
+
+PARAMS_FOLDER = 'params'
+MODELS_FOLDER = 'models'
+
 
 def store_params(model, params):
     """
@@ -28,7 +32,7 @@ def store_params(model, params):
     Returns:
     - None
     """
-    file_path = f'{PARAMS_FOLDER}/{model}_best_params.txt'
+    file_path = f'../{PARAMS_FOLDER}/{model}_best_params.txt'
     
     # Write the text to the file
     with open(file_path, 'w') as file:
@@ -48,7 +52,7 @@ def load_params(model):
     - dict or False: The loaded parameters as a dictionary if successful, False otherwise.
     """
     # Specify the file path
-    file_path = f'{PARAMS_FOLDER}/{model}_best_params.txt'
+    file_path = f'../{PARAMS_FOLDER}/{model}_best_params.txt'
 
     # Check if the file exists
     # if os.path.exists(file_path):
@@ -87,7 +91,7 @@ def store_model(model, model_name):
     Returns:
     - None
     """
-    file_path = f'/models/{model_name}_model.pkl'
+    file_path = f'../{MODELS_FOLDER}/{model_name}_model.pkl'
 
     try:
         # Save the model to the specified file path
@@ -106,7 +110,7 @@ def load_model(model_name):
     Returns:
     - The loaded model or None if unsuccessful.
     """
-    file_path = f'/models/{model_name}_model.pkl'
+    file_path = f'../{MODELS_FOLDER}/{model_name}_model.pkl'
 
 
     if not os.path.exists(file_path):
@@ -121,3 +125,14 @@ def load_model(model_name):
         except Exception as e:
             print(f"Error loading model: {e}")
             return None
+        
+
+def store_features(features):
+    file_path = '../features.txt'
+    # Write the text to the file
+    with open(file_path, 'w') as file:
+        file.write(features)
+
+    print(f"- Features have been sorted accoring their significance and stored {file_path}.")
+
+    return
