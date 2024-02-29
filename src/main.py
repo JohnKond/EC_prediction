@@ -23,6 +23,8 @@ parser.add_argument("--geo_info", action="store_true",
                     help="Include the coordinates information (X,Y) in model training.")
 parser.add_argument("--task", type=str, required=True, choices=["finetune", "train", "evaluate"],
                     help="Specify the task (finetune, train, evaluate).")
+parser.add_argument("--test", action="store_true",
+                    help="Test run.")
 args = parser.parse_args()
 
 
@@ -32,11 +34,11 @@ def main():
 
     df_01_09_init, df_02_09_init =  read_dataset()
     df_01_09 = data_preprocess(df_01_09_init)
-    X_train, X_test, y_train, y_test = data_split(df_01_09, geo_info=args.geo_info)
+    X_train, X_test, y_train, y_test = data_split(df_01_09, geo_info=args.geo_info, test=args.test)
     
     if args.task == 'train':
         print(f'- Train the {args.model} model on 01-09 dataset..')
-        train_model_pipeline(args.model, X_train, X_test, y_train, y_test, df_01_09.columns)
+        train_model_pipeline(args.model, X_train, X_test, y_train, y_test, df_01_09.columns.tolist())
     if args.task == 'finetune':
         print(f'- Finetune a {args.model} model on 01-09 dataset..')
         model_finetune(args.model, X_train, y_train)

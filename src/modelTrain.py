@@ -18,12 +18,12 @@ def feature_importance(model, all_features):
     feature_importances = model.feature_importances_
 
     # Create a DataFrame to display feature importances
-    df_feature_importance = pd.DataFrame({'Feature': all_features.columns, 'Importance': feature_importances})
+    df_feature_importance = pd.DataFrame({'Feature': all_features, 'Importance': feature_importances})
     df_feature_importance = df_feature_importance.sort_values(by='Importance', ascending=False)
 
     # Print the DataFrame
-    print(df_feature_importance)
-    return df_feature_importance.columns
+    print(df_feature_importance.columns.tolist())
+    return df_feature_importance
 
 
 def train_model_pipeline(model_name, X_train, X_test, y_train, y_test, all_features):

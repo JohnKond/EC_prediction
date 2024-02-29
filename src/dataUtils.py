@@ -42,7 +42,7 @@ def data_preprocess(df):
     new_df = df.fillna(df.mean())
     return new_df
 
-def data_split(df, geo_info=False):
+def data_split(df, geo_info=False, test=False):
     """
     Split the dataset into features and target variables, and further split them into training and testing sets.
 
@@ -56,6 +56,10 @@ def data_split(df, geo_info=False):
     - pd.Series: Training target.
     - pd.Series: Testing target.
     """
+
+    if test:
+        df = df[:50]
+
     if not geo_info:
         features = df.drop(['id','EC','X','Y'], axis=1)
     else: 
