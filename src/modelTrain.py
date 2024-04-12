@@ -1,3 +1,12 @@
+#####################################################################
+#   Author      : Ioannis Kontogiorgakis                            #
+#   File        : modelTrain.py                                     #
+#   Description : This file is responsible for the selected model   #
+#                 training and evaluation on the test set.          #
+#####################################################################
+
+
+# Import necessary libraries
 import numpy as np
 import pandas as pd
 import time
@@ -8,41 +17,77 @@ from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from xgboost import XGBRegressor
 from sklearn.svm import SVR
-from storeLoadUtils import load_params, load_model, store_features
+from storeLoadUtils import load_params, load_model, store_features, load_features
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 from sklearn.preprocessing import StandardScaler
 
+# for plots
+from plots import plot_actual_pred, residuals_test
+
 
 def feature_importance(model, all_features):
+    """
+    Calculate the feature importances of the given model.
+
+    Parameters:
+        model (object): Trained regression model.
+        all_features (list): List of all feature names.
+
+    Returns:
+        DataFrame: DataFrame containing feature importances sorted in descending order.
+    """
     # Get feature importances
     feature_importances = model.feature_importances_
 
     # Create a DataFrame to display feature importances
     df_feature_importance = pd.DataFrame({'Feature': all_features, 'Importance': feature_importances})
     df_feature_importance = df_feature_importance.sort_values(by='Importance', ascending=False)
-
-    # Print the DataFrame
-    print(df_feature_importance.columns.tolist())
+    
+    # get the features sorted according to their significance
+    significant_features = df_feature_importance['Feature'].tolist()
+    store_features(significant_features)
     return df_feature_importance
 
 
-def train_model_pipeline(model_name, X_train, X_test, y_train, y_test, all_features):
+def train_model_pipeline(model_name, X_train, X_test, y_train, y_test):
+    """
+    Train a regression model specified by model_name and evaluate its performance.
+
+    Parameters:
+        model_name (str): Name of the regression model ('RF', 'XGB', 'LR', 'SVM').
+        X_train (DataFrame): Training features.
+        X_test (DataFrame): Test features.
+        y_train (Series): Training target.
+        y_test (Series): Test target.
+
+    Returns:
+        None
+    """
     model = train_model(model_name, X_train, y_train)
-    feature_importance(model, all_features)
-    evaluate_model(model, X_test, y_test)
+    
+    # Run only once. Features are places in features.txt file
+    # feature_importance(model, all_features)
+
+    evaluate_model(model, model_name, X_test, y_test)
 
 
 
 def train_model(model_name, X_train, y_train):
-    # Create a Random Forest regression model with the best parameters from the finetuning
-    # model_params = {'max_depth': None, 'min_samples_leaf': 1, 'min_samples_split': 2, 'n_estimators': 150}
+    """
+    Train a regression model specified by model_name using the training data.
 
-    # model = load_model(model_name=model_name)
-    # if model :
-        # print(f'Trained {model_name} model already exists. Loading existing {model_name} model.')        
-        # return model
+    Parameters:
+        model_name (str): Name of the regression model ('RF', 'XGB', 'LR', 'SVM').
+        X_train (DataFrame): Training features.
+        y_train (Series): Training target.
 
+    Returns:
+        object: Trained regression model.
+    """
+
+    # Load specified model's parameters.
     model_params = load_params(model_name)
+
     if not model_params:
         print(f'- {model_name} parameters file does not exist. Exiting..')
         exit(1)
@@ -59,8 +104,8 @@ def train_model(model_name, X_train, y_train):
         scaler = StandardScaler()
         X_train = scaler.fit_transform(X_train)
         X_test = scaler.transform(X_test)
-    elif model_name == 'SVM':
-        model = SVR()
+    # elif model_name == 'SVM':
+        # model = SVR()
     # elif model_name == 'CAT':
         # model = CatBoostRegressor(**model_params, random_state=42)
 
@@ -74,14 +119,23 @@ def train_model(model_name, X_train, y_train):
     end_time = time.time()
     print(f"[ Execution time: {end_time - start_time} ]")
 
-
-
-
     return model
 
 
-def evaluate_model(model, X_test, y_test):
 
+def evaluate_model(model, model_name, X_test, y_test):
+    """
+    Evaluate the performance of the given regression model on the test data.
+
+    Parameters:
+        model (object): Trained regression model.
+        model_name (str): The name of the trained model (XGB, RF).
+        X_test (DataFrame): Test features.
+        y_test (Series): Test target.
+
+    Returns:
+        None
+    """
     print('-------- Model Evaluation on Test set --------')
 
     # Make predictions on the test set
@@ -112,3 +166,7 @@ def evaluate_model(model, X_test, y_test):
     
     # Print the table
     print(table)
+
+    # Evaluate RF model with different plots
+    plot_actual_pred(model_name, y_pred, y_test, rmse, mse, r2)
+    residuals_test(y_pred, y_test)

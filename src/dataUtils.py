@@ -1,3 +1,12 @@
+#################################################################
+#   Author      : Ioannis Kontogiorgakis                        #
+#   File        : dataUtils.py                                  #     
+#   Description : This file provides utility functions for      #
+#                 handling data operations, such as reading     #
+#                 and preprocessing datasets.                   #
+#################################################################
+
+
 """
 dataUtils.py
 

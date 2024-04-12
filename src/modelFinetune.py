@@ -1,3 +1,13 @@
+#####################################################################
+#   Author      : Ioannis Kontogiorgakis                            #      
+#   File        : modelFinetune.py                                  #
+#   Description : This file is responsible for the selected model   #
+#                 finetuning. This procedure is implemented         #
+#                 with scikit-learn tool GridSearchCV.              #
+#####################################################################
+
+
+# Import necessary libraries
 from globalParams import RF_param_grid, CAT_param_grid, XGB_param_grid, LogR_param_grid
 from sklearn.model_selection import GridSearchCV
 from storeLoadUtils import store_params, load_model

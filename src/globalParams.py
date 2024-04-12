@@ -1,3 +1,10 @@
+#################################################################
+#   Author      : Ioannis Kontogiorgakis                        #
+#   File        : gloablParams.py                               #
+#   Description : This file contains the parameter ranges of    #
+#                 the tested models, used for finetuning.       #
+#################################################################
+
 RF_param_grid = {
     'n_estimators': [50, 100, 150],
     'max_depth': [None, 10, 20],

@@ -1,17 +1,13 @@
-# storeLoadUtils.py
+#####################################################################
+#   Author      : Ioannis Kontogiorgakis                            #
+#   File        : storeLoadUtils.py                                 #
+#   Description : This file provides utility functions for storing  # 
+#                 and loading machine learning models, as well as   # 
+#                 handling model parameters.                        #
+#####################################################################
 
-"""
-storeLoadUtils.py
 
-This file provides utility functions for storing and loading machine learning models, as well as handling model parameters.
-
-Functions:
-- store_params(model, params)
-- load_params(model)
-- store_model(model, model_name)
-- load_model(model_name)
-"""
-
+# Import necessary libraries
 import os
 import ast
 import joblib
@@ -134,7 +130,7 @@ def store_features(features):
         for feature in features:
             file.write(feature + "\n")
 
-    print(f"- Features have been sorted accoring their significance and stored {file_path}.")
+    print(f"- Features have been sorted accoring their significance and stored {FEATURES_FILE}.")
     return
 
 
