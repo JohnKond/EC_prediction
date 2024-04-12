@@ -45,11 +45,15 @@ In order to create some ground truth data about our target variable "EC", we mea
 <li>The model was trained efficiently in just <b>6.06</b> seconds, demonstrating its scalability for large datasets.</li>
 </ul>
 
+
+Please review the brief report included in the `EC_prediction.ipynb` notebook for more details.
+
+
 <br><br><br>
 <h2>Running the Project</h2>
 
-<h4>Option 1: Using Google Colab Notebook (ipynb) </h4>
 
+<h4>Option 1: Using Google Colab Notebook (ipynb) </h4>
 
 - Open the `EC_prediction.ipynb` notebook on Google Colab.
 - Follow the instructions provided in the notebook to load the data, preprocess it, train the models, and evaluate their performance.
